@@ -45,7 +45,7 @@ export default ({navigation, route}) => {
         inactiveTintColor: colors.black,
         tabStyle: {paddingVertical: 5, backgroundColor: colors.white},
       }}>
-      <Tab.Screen
+      {/* <Tab.Screen
         name="News"
         component={News}
         options={{
@@ -71,7 +71,7 @@ export default ({navigation, route}) => {
             );
           },
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Events"
         component={Events}

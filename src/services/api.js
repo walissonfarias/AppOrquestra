@@ -1,6 +1,5 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const url = 'orquestraouropreto.herokuapp.com/'
-const baseURL = `http://${url}`
+const baseURL = 'https://orquestra-backend-staging.herokuapp.com/';
 
-export default axios.create({ baseURL })
+export default axios.create({baseURL});

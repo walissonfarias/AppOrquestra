@@ -17,6 +17,9 @@ export default ({
   type,
   confirmText = 'Selecionar',
   cancelText = 'Cancelar',
+  dateValue,
+  setDateValue,
+  setTextVisible,
 }) => {
   const [scrollRef, setScrollRef] = useState(null);
   const [scrollValue, setScrollValue] = useState(0);
@@ -34,21 +37,15 @@ export default ({
         setData(months);
       }
       if (type === 'year') {
-        const years = [...Array(50)].map((_, index) => 2000 + index);
+        const years = [...Array(50)].map((_, index) => 2001 + index);
         setData(years);
       }
     } else {
-      let value;
-      if (type === 'month') {
-        value = (Number(moment().format('M')) - 1) * 58;
-      }
-      if (type === 'year') {
-        value = (Number(moment().format('YY')) - 1) * 58;
-      }
+      const value = (dateValue - 1) * 58;
       scrollRef.scrollTo({x: 0, y: value, animated: true});
       setScrollValue(value);
     }
-  }, [scrollRef, type]);
+  }, [dateValue, scrollRef, type]);
 
   function handleOnPressArrow(direction) {
     const value = direction === 'RIGHT' ? scrollValue + 58 : scrollValue - 58;
@@ -64,16 +61,22 @@ export default ({
     setScrollValue(value);
   }
 
+  function handleOnConfirm() {
+    const date = scrollValue / 58 + 1;
+    setDateValue(date);
+    setVisible(!visible);
+    setTextVisible(true);
+  }
+
   return (
     <Modal visible={visible} animationType={'fade'} transparent={true}>
       <View style={styles.container}>
         <View style={styles.alert}>
           <View style={styles.containerPicker}>
-            <AnimatableView 
-              animation={'fadeInRight'} 
-              delay={100} 
-              style={styles.containerButton}
-            >
+            <AnimatableView
+              animation={'fadeInRight'}
+              delay={100}
+              style={styles.containerButton}>
               <Button
                 Icon={IconArrowLeft}
                 styleButton={styles.buttonArrow}
@@ -82,11 +85,10 @@ export default ({
               />
             </AnimatableView>
 
-            <AnimatableView 
-            animation={'fadeIn'} 
-            delay={300} 
-            style={styles.containerItemPicker}
-            >
+            <AnimatableView
+              animation={'fadeIn'}
+              delay={300}
+              style={styles.containerItemPicker}>
               <ScrollView
                 ref={setScrollRef}
                 scrollEnabled={false}
@@ -99,11 +101,10 @@ export default ({
               </ScrollView>
             </AnimatableView>
 
-            <AnimatableView 
-              animation={'fadeInLeft'} 
-              delay={100} 
-              style={styles.containerButton}
-            >
+            <AnimatableView
+              animation={'fadeInLeft'}
+              delay={100}
+              style={styles.containerButton}>
               <Button
                 Icon={IconArrowRight}
                 styleButton={styles.buttonArrow}
@@ -124,7 +125,7 @@ export default ({
               styleButton={styles.button}
               styleText={styles.buttonTextConfirm}
               text={confirmText}
-              onPress={() => setVisible(!visible)}
+              onPress={handleOnConfirm}
             />
           </View>
         </View>
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   containerItemPicker: {
-    width: '50%'
+    width: '50%',
   },
   itemPicker: {
     height: 58,

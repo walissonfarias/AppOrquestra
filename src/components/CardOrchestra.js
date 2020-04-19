@@ -25,7 +25,7 @@ export default ({item}) => {
           style={styles.card}
           activeOpacity={0.68}
           onPress={handleOnpress}>
-          <Image source={{uri: item.image}} style={styles.image} />
+          <Image source={item.image} style={styles.image} />
           <Text style={styles.text}>{item.title}</Text>
         </TouchableOpacity>
       ) : (

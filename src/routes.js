@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 import colors from './constants/colors';
 
 import BottomTab from './components/BottomTab';
-import UserButtonHeader from './components/UserButtonHeader';
+import SettingsButtonHeader from './components/SettingsButtonHeader';
 
 import Login from './pages/Login';
 import SignIn from './pages/SignIn';
@@ -25,7 +25,7 @@ export default () => {
             backgroundColor: colors.white,
           },
         }}>
-        <Stack.Screen
+        {/* <Stack.Screen
           name={'Login'}
           component={Login}
           options={{
@@ -38,13 +38,13 @@ export default () => {
           options={{
             headerTitle: 'Cadastro',
           }}
-        />
+        /> */}
         <Stack.Screen
           name="Home"
           component={BottomTab}
           options={({navigation}) => ({
             headerLeft: null,
-            headerRight: () => <UserButtonHeader navigation={navigation} />,
+            headerRight: () => <SettingsButtonHeader navigation={navigation} />,
           })}
         />
         <Stack.Screen

@@ -11,7 +11,7 @@ import Button from './Button';
 
 export default ({navigation, news}) => {
   async function handleOnPress() {
-    await AsyncStorage.removeItem('@view_news')
+    await AsyncStorage.removeItem('@view_news');
     navigation.navigate('ViewNews', {id: news._id});
   }
 

@@ -8,7 +8,7 @@ export default ({
   Icon,
   onPress = () => {},
   type = 'solid',
-  buttonColor = colors.black,
+  buttonColor = colors.primary,
   textColor = 'white',
   width = '90%',
   height = 58,

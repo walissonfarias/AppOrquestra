@@ -1,112 +1,102 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, ScrollView, View, Text} from 'react-native';
-import * as Animatable from 'react-native-animatable';
-
-const AnimatableView = Animatable.createAnimatableComponent(View);
+import AsyncStorage from '@react-native-community/async-storage';
+import {useNetInfo} from '@react-native-community/netinfo';
 
 import colors from '../constants/colors';
 
 import Loading from '../components/Loading';
-import CardEvents from '../components/CardEvents';
-import Button from '../components/Button';
-import DatePicker from '../components/DatePicker';
+import TimelineEvents from '../components/TimelineEvents';
+import DatePickerButton from '../components/DatePickerButton';
 
-import Events from '../MockEvents';
+import api from '../services/api';
 
 export default ({navigation}) => {
+  const netInfo = useNetInfo();
   const [events, setEvents] = useState(null);
+  const [page, setPage] = useState(null);
+  const [pages, setPages] = useState(null);
 
-  const [visibleMonthPicker, setVisibleMonthPicker] = useState(false);
-  const [visibleYearPicker, setVisibleYearPicker] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     (async () => {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      setEvents(Events);
+      const data = await retrieveData();
+      setEvents(data);
+
+      if (netInfo.isConnected) {
+        setMessage('Notícias em breve');
+      } else {
+        setMessage('Sem conexão com a internet');
+      }
     })();
-  }, []);
+  }, [netInfo]);
+
+  async function retrieveData() {
+    const {data} = await api.get('/events').catch(async () => {
+      return {
+        data: {
+          docs: JSON.parse(await AsyncStorage.getItem('@cards_events')) || [],
+          page: 1,
+          pages: 1,
+        },
+      };
+    });
+
+    await AsyncStorage.setItem('@cards_events', JSON.stringify(data.docs));
+    setPage(data.page);
+    setPages(data.pages);
+
+    return data.docs;
+  }
+
+  function postionMoreData(_page) {
+    if (_page === 0) {
+      return 0;
+    }
+    const value = Math.pow(0.25, _page);
+    return value + postionMoreData(_page - 1);
+  }
+
+  async function handleMoreData({nativeEvent}) {
+    const position = nativeEvent.contentOffset.y;
+    const size = nativeEvent.contentSize.height;
+
+    if (position * 4 < size) {
+      return;
+    }
+    
+    console.log(position * 4, size);
+
+    if (Number(page) > Number(pages)) {
+      return;
+    }
+
+    const nextPage = Number(page) + 1;
+    setPage(nextPage);
+    const {data} = await api.get(`/events?page=${nextPage}`).catch(async () => {
+      return {};
+    });
+
+    const _data = events.concat(data.docs);
+    setEvents(_data);
+    await AsyncStorage.setItem('@cards_events', JSON.stringify(_data));
+  }
 
   return (
     <>
-      <DatePicker
-        visible={visibleMonthPicker}
-        setVisible={setVisibleMonthPicker}
-        type={'month'}
-      />
-      <DatePicker
-        visible={visibleYearPicker}
-        setVisible={setVisibleYearPicker}
-        type={'year'}
-      />
-
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: colors.whiteSmoke,
-        }}>
-        <View
-          style={{
-            width: '90%',
-            backgroundColor: colors.white,
-            borderRadius: 5,
-            borderWidth: 1,
-            borderColor: colors.lightGray,
-            flexDirection: 'row',
-            marginTop: 20,
-            marginBottom: 10,
-          }}>
-          <View
-            style={{
-              width: '50%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRightColor: colors.lightGray,
-              borderRightWidth: 1,
-            }}>
-            <Button
-              text={'Mês'}
-              width={'50%'}
-              buttonColor={colors.black}
-              type={'outline'}
-              onPress={() => setVisibleMonthPicker(!visibleMonthPicker)}
-            />
-          </View>
-          <View
-            style={{
-              width: '50%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Button
-              text={'Ano'}
-              width={'50%'}
-              buttonColor={colors.black}
-              type={'outline'}
-              onPress={() => setVisibleYearPicker(!visibleYearPicker)}
-            />
-          </View>
-        </View>
-      </View>
+      <DatePickerButton setEvents={setEvents} />
 
       <ScrollView
         style={styles.container}
-        showsHorizontalScrollIndicator={false}>
+        showsHorizontalScrollIndicator={false}
+        onScroll={handleMoreData}>
         {events ? (
           events.length ? (
-            <View style={styles.content}>
-              {events.map((item, index) => (
-                <AnimatableView
-                  animation={'fadeInRight'}
-                  delay={200 * (index + 1)}
-                  key={item._id}>
-                  <CardEvents navigation={navigation} event={item} />
-                </AnimatableView>
-              ))}
-            </View>
+            <TimelineEvents navigation={navigation} events={events} />
           ) : (
             <View style={styles.containerLoading}>
-              <Text style={styles.text}>Eventos em breve</Text>
+              <Text style={styles.text}>{message}</Text>
             </View>
           )
         ) : (
