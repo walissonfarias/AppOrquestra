@@ -58,7 +58,7 @@ export default ({route}) => {
               <Image source={{uri: news.image}} style={styles.image} />
             </AnimatableView>
             <View style={styles.content}>
-              <View style={styles.textContainer}>
+              <View style={styles.containerText}>
                 <AnimatableView animation={'fadeIn'} delay={300}>
                   <Text style={styles.title}>{news.title.toUpperCase()}</Text>
                 </AnimatableView>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 20,
   },
-  textContainer: {
+  containerText: {
     width: width * 0.85,
   },
   title: {

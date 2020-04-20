@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import getFormatedDate from '../utils/formatDate';
 
+import api from '../services/api';
+
 import colors from '../constants/colors';
 import Button from '../components/Button';
 import Alert from '../components/Alert';
@@ -12,11 +14,16 @@ export default ({route}) => {
   const [locationAlertVisible, setLocationAlertVisible] = useState(false);
   const [removeAlertVisible, setRemoveAlertVisible] = useState(false);
   const [isScheduled, setIsScheduled] = useState(false);
+  const [event, setEvent] = useState({});
 
-  const {event} = route.params;
+  const {id} = route.params;
 
   useEffect(() => {
     (async () => {
+      const ___temp = await api.get(`/events/${id}`);
+      setEvent(___temp.data);
+      console.log(___temp.data);
+      // EVENTS AINDA NÂO ESTÀ PRONTO
       const response =
         (await AsyncStorage.getItem('@schedule')) || JSON.stringify({data: []});
       const {data} = JSON.parse(response);
@@ -57,7 +64,9 @@ export default ({route}) => {
   }
 
   function handleViewLocation() {
-    const {lat, lon} = event.location;
+    const {coordinates} = event.location;
+    const lat = coordinates[0];
+    const lon = coordinates[1];
 
     if (!(event && lon)) {
       return handleLocationAlertVisible();
@@ -91,22 +100,10 @@ export default ({route}) => {
       />
 
       <View style={styles.content}>
-        <Text
-          style={{
-            textAlign: 'center',
-            fontWeight: 'bold',
-            color: colors.black,
-            marginVertical: 20,
-          }}>
-          {event.name}
-        </Text>
-        <Text style={{textAlign: 'center', color: colors.gray}}>
-          {getFormatedDate(event.date, 'LL')}
-        </Text>
+        <Text style={styles.textName}>{event.name}</Text>
+        <Text style={styles.textDate}>{getFormatedDate(event.date, 'LL')}</Text>
 
-        <Text style={{marginVertical: 20, color: colors.black}}>
-          {event.description}
-        </Text>
+        <Text style={styles.textDescription}>{event.description}</Text>
 
         <View style={{marginBottom: 10}}>
           <Text style={{color: colors.black}}>
@@ -139,13 +136,13 @@ export default ({route}) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button
+        {/* <Button
           text={isScheduled ? 'Remover da agenda' : 'Adicionar a agenda'}
           onPress={
             isScheduled ? handleRemoveAlertVisible : handleScheduleEvents
           }
           buttonColor={isScheduled ? colors.danger : colors.primary}
-        />
+        /> */}
         <Button
           text={'Visualizar localização'}
           type={'outline'}
@@ -165,6 +162,20 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '90%',
+  },
+  textName: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: colors.black,
+    marginVertical: 20,
+  },
+  textDate: {
+    textAlign: 'center',
+    color: colors.gray,
+  },
+  textDescription: {
+    marginVertical: 20,
+    color: colors.black,
   },
   buttonContainer: {
     position: 'absolute',

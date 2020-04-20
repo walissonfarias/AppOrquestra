@@ -25,7 +25,7 @@ export default () => {
             backgroundColor: colors.white,
           },
         }}>
-        {/* <Stack.Screen
+        <Stack.Screen
           name={'Login'}
           component={Login}
           options={{
@@ -38,7 +38,7 @@ export default () => {
           options={{
             headerTitle: 'Cadastro',
           }}
-        /> */}
+        />
         <Stack.Screen
           name="Home"
           component={BottomTab}

@@ -49,19 +49,12 @@ export default ({navigation}) => {
     return data.docs;
   }
 
-  function postionMoreData(_page) {
-    if (_page === 0) {
-      return 0;
-    }
-    const value = Math.pow(0.45, _page);
-    return value + postionMoreData(_page - 1);
-  }
-
   async function handleMoreData({nativeEvent}) {
     const position = nativeEvent.contentOffset.y;
     const size = nativeEvent.contentSize.height;
+    const layout = nativeEvent.layoutMeasurement.height;
 
-    if (position < size * 0.5 + postionMoreData(pages - page + 1)) {
+    if (position < size - layout * 1.05) {
       return;
     }
 

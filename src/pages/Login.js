@@ -14,11 +14,15 @@ export default ({navigation}) => {
   const [password, setPassword] = useState('');
 
   function handleOnPressLogin() {
+    // navigation.reset({routes: [{name: 'Home'}]});
+  }
+
+  function handleOnPressLoginWithoutUser() {
     navigation.reset({routes: [{name: 'Home'}]});
   }
 
   function handleOnPressSignIn() {
-    navigation.navigate('SignIn');
+    // navigation.navigate('SignIn');
   }
 
   return (
@@ -73,8 +77,15 @@ export default ({navigation}) => {
 
         <Button
           text={'Cadastrar'}
-          buttonColor={colors.primary}
+          buttonColor={colors.white}
           onPress={handleOnPressSignIn}
+          type={'outline'}
+        />
+
+        <Button
+          text={'Entrar como convidado'}
+          buttonColor={colors.primary}
+          onPress={handleOnPressLoginWithoutUser}
           type={'outline'}
         />
       </AnimatableView>

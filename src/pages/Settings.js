@@ -38,7 +38,8 @@ export default ({navigation}) => {
       <Alert
         visible={logoutAlertVisible}
         title={'Sair'}
-        message={'Você deseja sair da conta atual?'}
+        // message={'Você deseja sair da conta atual?'}
+        message={'Você deseja sair?'}
         onCancelPress={() => setLogoutAlertVisible(!logoutAlertVisible)}
         onConfirmPress={() => handleLougoutOnConfirm()}
         cancelText={'Voltar'}
@@ -47,11 +48,11 @@ export default ({navigation}) => {
 
       <View style={styles.container}>
         <View style={styles.content}>
-          <View style={styles.profileContainer}>
+          {/* <View style={styles.profileContainer}>
             <IconUser size={100} color={colors.gray} />
             <Text>{'Nome do Usuário'}</Text>
             <Text>{'email@email.com'}</Text>
-          </View>
+          </View> */}
 
           <View style={styles.switchContainer}>
             <Text>{'Notificações'}</Text>
@@ -75,12 +76,12 @@ export default ({navigation}) => {
                         />
                     </View> */}
 
-          <Button
+          {/* <Button
             styleButton={styles.button}
             styleText={styles.buttonText}
             text={'Alterar senha'}
             onPress={handleOnPress}
-          />
+          /> */}
           {/* <Button
                     styleButton={styles.button}
                     styleText={styles.buttonText}
@@ -90,7 +91,8 @@ export default ({navigation}) => {
           <Button
             styleButton={{...styles.button, ...styles.logoutButton}}
             styleText={styles.buttonText}
-            text={'Sair da minha conta'}
+            // text={'Sair da minha conta'}
+            text={'Sair'}
             onPress={handleOnPressLogout}
           />
         </View>
