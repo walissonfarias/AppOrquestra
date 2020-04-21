@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Linking} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as Animatable from 'react-native-animatable';
+
+const AnimatableView = Animatable.createAnimatableComponent(View);
 
 import getFormatedDate from '../utils/formatDate';
 
@@ -32,7 +35,7 @@ export default ({route}) => {
         item === event._id ? setIsScheduled(true) : setIsScheduled(false),
       );
     })();
-  }, [event._id]);
+  }, [event._id, id]);
 
   async function handleScheduleEvents() {
     const response =
@@ -105,31 +108,23 @@ export default ({route}) => {
 
         <Text style={styles.textDescription}>{event.description}</Text>
 
-        <View style={{marginBottom: 10}}>
-          <Text style={{color: colors.black}}>
-            <Text style={{fontWeight: 'bold', color: colors.black}}>
-              Local:{' '}
-            </Text>
+        <View style={styles.containerInfos}>
+          <Text style={styles.textInfo}>
+            <Text style={styles.textLabel}>Local: </Text>
             {event.local}
           </Text>
-          <Text style={{color: colors.black}}>
-            <Text style={{fontWeight: 'bold', color: colors.black}}>
-              Endereço:{' '}
-            </Text>
+          <Text style={styles.textInfo}>
+            <Text style={styles.textLabel}>Endereço: </Text>
             {event.address}
           </Text>
         </View>
         <View>
-          <Text style={{color: colors.black}}>
-            <Text style={{fontWeight: 'bold', color: colors.black}}>
-              Duração:{' '}
-            </Text>
+          <Text style={styles.textInfo}>
+            <Text style={styles.textLabel}>Duração: </Text>
             {event.duration}
           </Text>
-          <Text style={{color: colors.black}}>
-            <Text style={{fontWeight: 'bold', color: colors.black}}>
-              Classificação:{' '}
-            </Text>
+          <Text style={styles.textInfo}>
+            <Text style={styles.textLabel}>Classificação: </Text>
             {event.classification}
           </Text>
         </View>
@@ -175,6 +170,16 @@ const styles = StyleSheet.create({
   },
   textDescription: {
     marginVertical: 20,
+    color: colors.black,
+  },
+  containerInfos: {
+    marginBottom: 10,
+  },
+  textLabel: {
+    fontWeight: 'bold',
+    color: colors.black,
+  },
+  textInfo: {
     color: colors.black,
   },
   buttonContainer: {

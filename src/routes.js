@@ -32,13 +32,13 @@ export default () => {
             headerShown: false,
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={'SignIn'}
           component={SignIn}
           options={{
             headerTitle: 'Cadastro',
           }}
-        />
+        /> */}
         <Stack.Screen
           name="Home"
           component={BottomTab}

@@ -58,7 +58,7 @@ export default ({navigation}) => {
       return;
     }
 
-    if (Number(page) > Number(pages)) {
+    if (Number(page) >= Number(pages)) {
       return;
     }
 

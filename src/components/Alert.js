@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, Modal, View, Text} from 'react-native';
 
 import colors from '../constants/colors';
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
-    color: colors.danger
+    color: colors.danger,
   },
   textMessage: {
     width: '90%',

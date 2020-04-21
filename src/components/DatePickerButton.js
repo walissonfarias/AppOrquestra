@@ -9,20 +9,33 @@ import DatePicker from '../components/DatePicker';
 
 import api from '../services/api';
 
-export default ({setEvents}) => {
+export default ({
+  month,
+  year,
+  setMonth,
+  setYear,
+  setIsSearch,
+  setEvents,
+  setPage,
+  setPages,
+}) => {
   const [visibleMonthPicker, setVisibleMonthPicker] = useState(false);
   const [visibleYearPicker, setVisibleYearPicker] = useState(false);
 
   const [textVisible, setTextVisible] = useState(false);
 
-  const [month, setMonth] = useState(Number(moment().format('MM')));
-  const [year, setYear] = useState(Number(moment().format('YY')));
-
   useEffect(() => {
     (async () => {
-      // setEvents({});
+      const {data} = await api
+        .get(`/events?month=0${month}&year=${2000 + year}`)
+        .catch(async () => {
+          return {};
+        });
+      setEvents(data.docs);
+      setPage(data.page);
+      setPages(data.pages);
     })();
-  }, [month, year]);
+  }, [month, setEvents, setPage, setPages, year]);
 
   return (
     <>
@@ -33,6 +46,7 @@ export default ({setEvents}) => {
         dateValue={month}
         setDateValue={setMonth}
         setTextVisible={setTextVisible}
+        setIsSearch={setIsSearch}
       />
       <DatePicker
         visible={visibleYearPicker}
@@ -41,6 +55,7 @@ export default ({setEvents}) => {
         dateValue={year}
         setDateValue={setYear}
         setTextVisible={setTextVisible}
+        setIsSearch={setIsSearch}
       />
 
       <View style={styles.container}>

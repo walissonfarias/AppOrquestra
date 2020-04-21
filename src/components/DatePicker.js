@@ -20,6 +20,7 @@ export default ({
   dateValue,
   setDateValue,
   setTextVisible,
+  setIsSearch,
 }) => {
   const [scrollRef, setScrollRef] = useState(null);
   const [scrollValue, setScrollValue] = useState(0);
@@ -66,6 +67,7 @@ export default ({
     setDateValue(date);
     setVisible(!visible);
     setTextVisible(true);
+    setIsSearch(true);
   }
 
   return (
