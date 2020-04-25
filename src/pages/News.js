@@ -83,7 +83,9 @@ export default ({navigation}) => {
           <TimelineNews navigation={navigation} news={news} />
         ) : (
           <View style={styles.containerLoading}>
-            <Text style={styles.text}>{message}</Text>
+            <Text allowFontScaling={false} style={styles.text}>
+              {message}
+            </Text>
           </View>
         )
       ) : (

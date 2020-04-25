@@ -7,8 +7,6 @@ import {
   Image,
   Text,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import {useNetInfo} from '@react-native-community/netinfo';
 import * as Animatable from 'react-native-animatable';
 
 const AnimatableView = Animatable.createAnimatableComponent(View);
@@ -16,6 +14,8 @@ const AnimatableView = Animatable.createAnimatableComponent(View);
 const {width} = Dimensions.get('window');
 
 import colors from '../constants/colors';
+import fontSize from '../constants/fontSize';
+import fontFamily from '../constants/fontFamily';
 
 import Loading from '../components/Loading';
 
@@ -23,7 +23,6 @@ import api from '../services/api';
 
 export default ({route}) => {
   const {id} = route.params;
-  const netInfo = useNetInfo();
   const [news, setNews] = useState(null);
 
   useEffect(() => {
@@ -32,17 +31,12 @@ export default ({route}) => {
       setNews(data);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [netInfo]);
+  }, []);
 
   async function retrieveData() {
     const {data} = await api.get(`/news/${id}`).catch(async () => {
-      return {
-        data:
-          JSON.parse(await AsyncStorage.getItem('@view_news')) ||
-          'NetworkError',
-      };
+      return {data: 'NetworkError'};
     });
-    await AsyncStorage.setItem('@view_news', JSON.stringify(data));
     return data;
   }
 
@@ -60,20 +54,28 @@ export default ({route}) => {
             <View style={styles.content}>
               <View style={styles.containerText}>
                 <AnimatableView animation={'fadeIn'} delay={300}>
-                  <Text style={styles.title}>{news.title.toUpperCase()}</Text>
+                  <Text allowFontScaling={false} style={styles.textTitle}>
+                    {news.title.toUpperCase()}
+                  </Text>
                 </AnimatableView>
                 <AnimatableView animation={'fadeIn'} delay={450}>
-                  <Text style={styles.description}>{news.description}</Text>
+                  <Text allowFontScaling={false} style={styles.textDescription}>
+                    {news.description}
+                  </Text>
                 </AnimatableView>
                 <AnimatableView animation={'fadeIn'} delay={600}>
-                  <Text style={styles.textNews}>{news.text}</Text>
+                  <Text allowFontScaling={false} style={styles.textNews}>
+                    {news.text}
+                  </Text>
                 </AnimatableView>
               </View>
             </View>
           </>
         ) : (
           <View style={styles.containerLoading}>
-            <Text style={styles.text}>Sem conexão com a internet</Text>
+            <Text allowFontScaling={false} style={styles.text}>
+              Sem conexão com a internet
+            </Text>
           </View>
         )
       ) : (
@@ -103,27 +105,31 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingBottom: 20,
   },
   containerText: {
     width: width * 0.85,
   },
-  title: {
+  textTitle: {
     textAlign: 'center',
     color: colors.primary,
-    fontWeight: 'bold',
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.large,
   },
-  description: {
+  textDescription: {
     textAlign: 'center',
     color: colors.gray,
     marginVertical: 20,
+    fontFamily: fontFamily.regular,
   },
   textNews: {
     color: colors.black,
+    fontSize: fontSize.medium,
+    fontFamily: fontFamily.regular,
   },
   image: {
     height: width * 0.370117,
-    width: width,
+    width,
     resizeMode: 'cover',
   },
 });

@@ -110,7 +110,9 @@ export default ({navigation}) => {
             <TimelineEvents navigation={navigation} events={events} />
           ) : (
             <View style={styles.containerLoading}>
-              <Text style={styles.text}>{message}</Text>
+              <Text allowFontScaling={false} style={styles.text}>
+                {message}
+              </Text>
             </View>
           )
         ) : (

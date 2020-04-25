@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, Text, Keyboard} from 'react-native';
 
 import colors from '../constants/colors';
+import fontFamily from '../constants/fontFamily';
 
 export default ({
   text = 'Button',
@@ -36,6 +37,7 @@ export default ({
             <Icon color={colors.primary} />
           ) : (
             <Text
+              allowFontScaling={false}
               style={[
                 styles.textButton,
                 {color: textColor, fontSize},
@@ -55,6 +57,7 @@ export default ({
           onPress={handleOnPress}
           activeOpacity={0.6}>
           <Text
+            allowFontScaling={false}
             style={[
               styles.textButton,
               {color: buttonColor, fontSize},
@@ -73,6 +76,7 @@ export default ({
           onPress={handleOnPress}
           activeOpacity={0.6}>
           <Text
+            allowFontScaling={false}
             style={[
               styles.textButton,
               {color: buttonColor, fontSize},
@@ -95,6 +99,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   textButton: {
-    fontWeight: 'bold',
+    fontFamily: fontFamily.bold,
   },
 });

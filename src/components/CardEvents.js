@@ -4,6 +4,8 @@ import {StyleSheet, TouchableOpacity, View, Text} from 'react-native';
 import getFormatedDate from '../utils/formatDate';
 
 import colors from '../constants/colors';
+import fontSize from '../constants/fontSize';
+import fontFamily from '../constants/fontFamily';
 
 import IconTour from '../assets/icons/IconTour';
 
@@ -23,28 +25,38 @@ export default ({navigation, event}) => {
             <IconTour size={45} color={event.tour} />
           </View>
           <View style={styles.containerCardLeftName}>
-            <Text style={styles.textName}>{event.name}</Text>
+            <Text allowFontScaling={false} style={styles.textName}>
+              {event.name}
+            </Text>
           </View>
         </View>
 
         <View style={styles.containerCardLeftInfos}>
           <View style={styles.containerCardLeftInfoHour}>
-            <Text style={styles.textLabel}>Horário</Text>
-            <Text style={styles.textInfo}>
+            <Text allowFontScaling={false} style={styles.textLabel}>
+              Horário
+            </Text>
+            <Text allowFontScaling={false} style={styles.textInfo}>
               {getFormatedDate(event.hour.start, 'HH:mm')} -{' '}
               {getFormatedDate(event.hour.end, 'HH:mm')}
             </Text>
           </View>
           <View style={styles.containerCardLeftInfoLocation}>
-            <Text style={styles.textLabel}>Local</Text>
-            <Text style={styles.textInfo}>{event.local}</Text>
+            <Text allowFontScaling={false} style={styles.textLabel}>
+              Local
+            </Text>
+            <Text allowFontScaling={false} style={styles.textInfo}>
+              {event.local}
+            </Text>
           </View>
         </View>
       </View>
 
       <View style={styles.containerCardRight}>
-        <Text style={styles.textDate}>{getFormatedDate(event.date, 'DD')}</Text>
-        <Text style={styles.textLabel}>
+        <Text allowFontScaling={false} style={styles.textDate}>
+          {getFormatedDate(event.date, 'DD')}
+        </Text>
+        <Text allowFontScaling={false} style={styles.textLabel}>
           {getFormatedDate(event.date, 'MMMM')}
         </Text>
       </View>
@@ -81,25 +93,30 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   textName: {
+    fontFamily: fontFamily.bold,
     width: '80%',
     marginLeft: 20,
-    fontWeight: 'bold',
     color: colors.black,
+    fontSize: fontSize.medium,
   },
   containerCardLeftInfos: {
     flexDirection: 'row',
   },
   textLabel: {
+    fontFamily: fontFamily.regular,
     color: colors.gray,
+    fontSize: fontSize.small,
   },
   textInfo: {
+    fontFamily: fontFamily.medium,
     color: colors.black,
+    fontSize: fontSize.xsmall,
   },
   containerCardLeftInfoHour: {
-    width: '40%',
+    width: '45%',
   },
   containerCardLeftInfoLocation: {
-    width: '60%',
+    width: '55%',
   },
   containerCardRight: {
     width: '20%',
@@ -107,7 +124,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textDate: {
-    fontWeight: 'bold',
     color: colors.black,
+    fontSize: fontSize.xlarge,
+    fontFamily: fontFamily.bold,
   },
 });

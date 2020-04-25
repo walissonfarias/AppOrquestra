@@ -7,24 +7,16 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 
 export default ({navigation}) => {
-  // Nome Completo *
-  // Nome de usuário *
-  // Data nascimento
-  // Sexo
-  // Email *
-  // Telefone
-  // Senha *
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [sex, setSex] = useState('');
   const [birth, setBirth] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   function handleOnPressSignIn() {
-    navigation.navigate('News');
+    navigation.navigate('Login');
   }
 
   return (
@@ -66,14 +58,6 @@ export default ({navigation}) => {
         placeholder={'Data de nascimento'}
         value={name}
         onChangeText={setName}
-        borderColor={colors.lightGray}
-        onFocusColor={colors.primary}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder={'Telefone'}
-        value={phone}
-        onChangeText={setPhone}
         borderColor={colors.lightGray}
         onFocusColor={colors.primary}
       />

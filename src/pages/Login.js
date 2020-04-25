@@ -1,23 +1,43 @@
 import React, {useState} from 'react';
 import {StyleSheet, StatusBar, View, Image} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as Animatable from 'react-native-animatable';
 
 const AnimatableView = Animatable.createAnimatableComponent(View);
 
 import colors from '../constants/colors';
+import fontFamily from '../constants/fontFamily';
 
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 
 export default ({navigation}) => {
-  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-  function handleOnPressLogin() {
-    // navigation.reset({routes: [{name: 'Home'}]});
+  async function handleOnPressLogin() {
+    // CRIAR AUTENTICAÇÃO COM userName e password
+    // const {user} = (userName, password);
+
+    const token = '123';
+    const name = 'Nome do Usuário';
+    const email = 'email@email.com';
+
+    const user = {token, name, email};
+
+    await AsyncStorage.setItem('@user', JSON.stringify(user));
+    navigation.reset({routes: [{name: 'Home'}]});
   }
 
-  function handleOnPressLoginWithoutUser() {
+  async function handleOnPressLoginWithoutUser() {
+    const token = 'guest';
+    const name = '';
+    const email = '';
+
+    const user = {token, name, email};
+
+    await AsyncStorage.setItem('@user', JSON.stringify(user));
+
     navigation.reset({routes: [{name: 'Home'}]});
   }
 
@@ -48,9 +68,9 @@ export default ({navigation}) => {
         <TextInput
           placeholder={'Usuário ou Email'}
           placeholderTextColor={colors.gray}
-          value={email}
+          value={userName}
           style={styles.input}
-          onChangeText={setEmail}
+          onChangeText={setUserName}
           inputColor={colors.gray + '50'}
           borderColor={colors.gray + '50'}
           onFocusColor={colors.primary}
@@ -76,16 +96,18 @@ export default ({navigation}) => {
         />
 
         <Button
-          text={'Cadastrar'}
-          buttonColor={colors.white}
-          onPress={handleOnPressSignIn}
+          styleText={styles.textGuest}
+          text={'Entrar como convidado'}
+          buttonColor={colors.primary}
+          onPress={handleOnPressLoginWithoutUser}
           type={'outline'}
         />
 
         <Button
-          text={'Entrar como convidado'}
-          buttonColor={colors.primary}
-          onPress={handleOnPressLoginWithoutUser}
+          styleText={styles.textSingin}
+          text={'Cadastrar'}
+          buttonColor={colors.white}
+          onPress={handleOnPressSignIn}
           type={'outline'}
         />
       </AnimatableView>
@@ -116,10 +138,16 @@ const styles = StyleSheet.create({
   },
   input: {
     marginVertical: 10,
-    fontWeight: 'bold',
     color: colors.white,
+    fontFamily: fontFamily.medium,
   },
   button: {
     marginVertical: 10,
+  },
+  textGuest: {
+    fontFamily: fontFamily.bold,
+  },
+  textSingin: {
+    fontFamily: fontFamily.regular,
   },
 });

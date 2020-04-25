@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import moment from 'moment';
 
 import colors from '../constants/colors';
+import fontFamily from '../constants/fontFamily';
 
 import Button from '../components/Button';
 import DatePicker from '../components/DatePicker';
@@ -69,6 +70,7 @@ export default ({
                       .format('MMMM')
                   : 'Mês'
               }
+              styleText={styles.textButton}
               width={'50%'}
               buttonColor={colors.black}
               type={'outline'}
@@ -78,6 +80,7 @@ export default ({
           <View style={styles.buttonYear}>
             <Button
               text={textVisible ? year + 2000 : 'Ano'}
+              styleText={styles.textButton}
               width={'50%'}
               buttonColor={colors.black}
               type={'outline'}
@@ -96,7 +99,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.whiteSmoke,
   },
-
   containerButton: {
     width: '90%',
     backgroundColor: colors.white,
@@ -107,7 +109,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
   },
-
+  textButton: {
+    fontFamily: fontFamily.medium,
+  },
   buttonMonth: {
     width: '50%',
     alignItems: 'center',

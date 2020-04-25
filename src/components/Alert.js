@@ -2,6 +2,9 @@ import React from 'react';
 import {StyleSheet, Modal, View, Text} from 'react-native';
 
 import colors from '../constants/colors';
+import fontSize from '../constants/fontSize';
+import fontFamily from '../constants/fontFamily';
+
 import Button from './Button';
 
 export default ({
@@ -18,8 +21,12 @@ export default ({
       <View style={styles.container}>
         <View style={styles.alert}>
           <View style={styles.containerMessage}>
-            <Text style={styles.textTilte}>{title.toUpperCase()}</Text>
-            <Text style={styles.textMessage}>{message}</Text>
+            <Text allowFontScaling={false} style={styles.textTilte}>
+              {title.toUpperCase()}
+            </Text>
+            <Text allowFontScaling={false} style={styles.textMessage}>
+              {message}
+            </Text>
           </View>
 
           <View style={styles.options}>
@@ -67,12 +74,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textTilte: {
-    fontWeight: 'bold',
+    fontFamily: fontFamily.extraBold,
+    fontSize: fontSize.large,
     textAlign: 'center',
     marginBottom: 10,
     color: colors.danger,
   },
   textMessage: {
+    fontFamily: fontFamily.regular,
+    fontSize: fontSize.medium,
     width: '90%',
     textAlign: 'center',
     marginTop: 20,
@@ -86,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   buttonTextCancel: {
-    fontWeight: 'normal',
+    fontFamily: fontFamily.regular,
     color: colors.black,
   },
   buttonTextConfirm: {

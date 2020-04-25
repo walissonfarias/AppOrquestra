@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet, ScrollView, View, Text} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Animatable from 'react-native-animatable';
@@ -14,16 +14,15 @@ export default ({navigation}) => {
   const [events, setEvents] = useState(null);
 
   useEffect(() => {
-    (async () => {
+    const unsubscribe = navigation.addListener('focus', async () => {
       const response =
         (await AsyncStorage.getItem('@schedule')) || JSON.stringify({data: []});
       const {data} = JSON.parse(response);
-      console.log(data);
+      setEvents(data);
+    });
 
-      // {data} has events _id to request event data from api
-      setEvents([]);
-    })();
-  }, []);
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <ScrollView style={styles.container} showsHorizontalScrollIndicator={false}>
@@ -41,7 +40,9 @@ export default ({navigation}) => {
           </View>
         ) : (
           <View style={styles.containerLoading}>
-            <Text style={styles.text}>{'Adicione eventos a sua agenda'}</Text>
+            <Text allowFontScaling={false} style={styles.text}>
+              {'Adicione eventos a sua agenda'}
+            </Text>
           </View>
         )
       ) : (

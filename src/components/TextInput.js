@@ -12,7 +12,6 @@ export default ({
   onFocusColor = 'deepskyblue',
   width = '90%',
   height = 58,
-  fontSize,
   keyboardType = 'default',
   secureTextEntry = false,
   style = {},
@@ -42,7 +41,6 @@ export default ({
             borderColor: _borderColor,
             width,
             height,
-            fontSize,
           },
         ]}
         value={value}

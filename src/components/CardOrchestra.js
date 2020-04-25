@@ -11,6 +11,8 @@ import {
 const {width} = Dimensions.get('window');
 
 import colors from '../constants/colors';
+import fontSize from '../constants/fontSize';
+import fontFamily from '../constants/fontFamily';
 
 export default ({item}) => {
   async function handleOnpress() {
@@ -26,14 +28,18 @@ export default ({item}) => {
           activeOpacity={0.68}
           onPress={handleOnpress}>
           <Image source={item.image} style={styles.image} />
-          <Text style={styles.text}>{item.title}</Text>
+          <Text allowFontScaling={false} style={styles.text}>
+            {item.title}
+          </Text>
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
           style={[styles.card, {backgroundColor: colors.primary}]}
           activeOpacity={0.68}
           onPress={handleOnpress}>
-          <Text style={styles.text}>{item.title}</Text>
+          <Text allowFontScaling={false} style={styles.text}>
+            {item.title}
+          </Text>
         </TouchableOpacity>
       )}
     </>
@@ -62,6 +68,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontSize: fontSize.small,
+    fontFamily: fontFamily.extraBold,
   },
 });

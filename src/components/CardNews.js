@@ -7,6 +7,9 @@ const {width} = Dimensions.get('window');
 import getFormatedDate from '../utils/formatDate';
 
 import colors from '../constants/colors';
+import fontSize from '../constants/fontSize';
+import fontFamily from '../constants/fontFamily';
+
 import Button from './Button';
 
 export default ({navigation, news}) => {
@@ -21,17 +24,26 @@ export default ({navigation, news}) => {
 
       <View style={styles.content}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{news.briefTitle.toUpperCase()}</Text>
-          <Text style={styles.subTitle}>{'POR ADMIN'}</Text>
+          <Text allowFontScaling={false} style={styles.textTitle}>
+            {news.briefTitle.toUpperCase()}
+          </Text>
+          <Text allowFontScaling={false} style={styles.textSubTitle}>
+            {'POR ADMIN'}
+          </Text>
         </View>
 
-        <Text style={styles.description}>{news.description}</Text>
+        <Text allowFontScaling={false} style={styles.textDescription}>
+          {news.description}
+        </Text>
       </View>
 
-      <View style={styles.infos}>
-        <Text style={styles.date}>{getFormatedDate(news.date, 'LL')}</Text>
+      <View style={styles.textInfos}>
+        <Text allowFontScaling={false} style={styles.textDate}>
+          {getFormatedDate(news.date, 'LL')}
+        </Text>
         <Button
           text={'Ler mais'}
+          styleText={{fontSize: fontSize.small}}
           width={'50%'}
           onPress={handleOnPress}
           buttonColor={colors.black}
@@ -66,28 +78,36 @@ const styles = StyleSheet.create({
   titleContainer: {
     marginVertical: 10,
   },
-  title: {
+  textTitle: {
+    fontFamily: fontFamily.bold,
     textAlign: 'center',
     color: colors.primary,
-    fontWeight: 'bold',
+    fontSize: fontSize.medium,
   },
-  subTitle: {
+  textSubTitle: {
+    fontFamily: fontFamily.medium,
     textAlign: 'center',
     color: colors.gray,
+    fontSize: fontSize.mini,
   },
-  description: {
+  textDescription: {
+    fontFamily: fontFamily.regular,
     textAlign: 'center',
     color: colors.black,
+    fontSize: fontSize.small,
   },
-  infos: {
+  textInfos: {
+    fontFamily: fontFamily.regular,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  date: {
+  textDate: {
+    fontFamily: fontFamily.medium,
     width: '50%',
     textAlign: 'center',
     color: colors.gray,
+    fontSize: fontSize.small,
   },
 });

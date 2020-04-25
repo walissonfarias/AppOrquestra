@@ -1,35 +1,37 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  AsyncStorage,
-  View,
-  Text,
-  Switch,
-} from 'react-native';
+import {ScrollView, StyleSheet, View, Text, Switch} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import IconUser from '../assets/icons/IconUser';
 
+import colors from '../constants/colors';
+import fontFamily from '../constants/fontFamily';
+
 import Button from '../components/Button';
 import Alert from '../components/Alert';
-
-import colors from '../constants/colors';
 
 export default ({navigation}) => {
   const [notifications, setNotifications] = useState(false);
   const [logoutAlertVisible, setLogoutAlertVisible] = useState(false);
   // const [darkMode, setDarkMode] = useState(false)
 
-  async function handleOnPress() {
-    await AsyncStorage.setItem('@colorScheme', 'dark');
-  }
+  const [user, setUser] = useState({});
 
-  function handleOnPressLogout() {
-    setLogoutAlertVisible(!logoutAlertVisible);
-  }
+  useEffect(() => {
+    (async () => {
+      const _response = await AsyncStorage.getItem('@user');
+      const response = JSON.parse(_response);
+      setUser(response);
+    })();
+  }, []);
 
-  function handleLougoutOnConfirm() {
+  // async function handleOnPress() {
+  //   await AsyncStorage.setItem('@colorScheme', 'dark');
+  // }
+
+  async function handleLougoutOnConfirm() {
     setLogoutAlertVisible(!logoutAlertVisible);
+    await AsyncStorage.clear();
     navigation.reset({routes: [{name: 'Login'}]});
   }
 
@@ -38,8 +40,11 @@ export default ({navigation}) => {
       <Alert
         visible={logoutAlertVisible}
         title={'Sair'}
-        // message={'Você deseja sair da conta atual?'}
-        message={'Você deseja sair?'}
+        message={
+          user.token !== 'guest'
+            ? 'Você deseja sair da conta atual?'
+            : 'Você deseja sair?'
+        }
         onCancelPress={() => setLogoutAlertVisible(!logoutAlertVisible)}
         onConfirmPress={() => handleLougoutOnConfirm()}
         cancelText={'Voltar'}
@@ -48,14 +53,24 @@ export default ({navigation}) => {
 
       <View style={styles.container}>
         <View style={styles.content}>
-          {/* <View style={styles.profileContainer}>
-            <IconUser size={100} color={colors.gray} />
-            <Text>{'Nome do Usuário'}</Text>
-            <Text>{'email@email.com'}</Text>
-          </View> */}
+          {user.token !== 'guest' ? (
+            <View style={styles.profileContainer}>
+              <IconUser size={100} color={colors.gray} />
+              <Text allowFontScaling={false} style={styles.textUser}>
+                {user.name}
+              </Text>
+              <Text allowFontScaling={false} style={styles.textUser}>
+                {user.email}
+              </Text>
+            </View>
+          ) : (
+            <></>
+          )}
 
           <View style={styles.switchContainer}>
-            <Text>{'Notificações'}</Text>
+            <Text allowFontScaling={false} style={styles.textButton}>
+              {'Notificações'}
+            </Text>
             <Switch
               trackColor={{
                 false: colors.lightGray + '88',
@@ -67,33 +82,37 @@ export default ({navigation}) => {
             />
           </View>
           {/* <View style={styles.switchContainer}>
-                        <Text>{'Dark mode'}</Text>
-                        <Switch
-                        trackColor={{ false: colors.lightGray + '88', true: colors.primary + '88' }}
-                        thumbColor={darkMode ? colors.primary : colors.lightGray}
-                        onValueChange={setDarkMode}
-                        value={darkMode}
-                        />
-                    </View> */}
+              <Text allowFontScaling={false}>{'Dark mode'}</Text>
+              <Switch
+                trackColor={{ false: colors.lightGray + '88', true: colors.primary + '88' }}
+                thumbColor={darkMode ? colors.primary : colors.lightGray}
+                onValueChange={setDarkMode}
+                value={darkMode}
+              />
+            </View> */}
+          {user.token !== 'guest' ? (
+            <>
+              <Button
+                styleButton={styles.button}
+                styleText={styles.textButton}
+                text={'Alterar senha'}
+              />
+              <Button
+                styleButton={styles.button}
+                styleText={styles.textButton}
+                text={'Excluir minha conta'}
+              />
+            </>
+          ) : (
+            <></>
+          )}
 
-          {/* <Button
-            styleButton={styles.button}
-            styleText={styles.buttonText}
-            text={'Alterar senha'}
-            onPress={handleOnPress}
-          /> */}
-          {/* <Button
-                    styleButton={styles.button}
-                    styleText={styles.buttonText}
-                    text={'Excluir minha conta'}
-                    onPress={handleOnPress}
-                    /> */}
           <Button
             styleButton={{...styles.button, ...styles.logoutButton}}
-            styleText={styles.buttonText}
+            styleText={styles.textButton}
             // text={'Sair da minha conta'}
-            text={'Sair'}
-            onPress={handleOnPressLogout}
+            text={user.token !== 'guest' ? 'Sair da minha conta' : 'Sair'}
+            onPress={() => setLogoutAlertVisible(!logoutAlertVisible)}
           />
         </View>
       </View>
@@ -107,6 +126,7 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
+    paddingBottom: 20,
   },
   content: {
     width: '90%',
@@ -126,12 +146,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  textUser: {
+    color: colors.black,
+    fontFamily: fontFamily.regular,
+    marginVertical: 5,
+  },
   button: {
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
   },
-  buttonText: {
+  textButton: {
     color: colors.black,
-    fontWeight: 'normal',
+    fontFamily: fontFamily.medium,
   },
 });

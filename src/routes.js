@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 import colors from './constants/colors';
+import fontFamily from './constants/fontFamily';
 
 import BottomTab from './components/BottomTab';
 import SettingsButtonHeader from './components/SettingsButtonHeader';
@@ -21,24 +22,9 @@ export default () => {
       <Stack.Navigator
         screenOptions={{
           headerTintColor: colors.primary,
-          headerStyle: {
-            backgroundColor: colors.white,
-          },
+          headerStyle: {backgroundColor: colors.white},
+          headerTitleStyle: {fontFamily: fontFamily.medium},
         }}>
-        <Stack.Screen
-          name={'Login'}
-          component={Login}
-          options={{
-            headerShown: false,
-          }}
-        />
-        {/* <Stack.Screen
-          name={'SignIn'}
-          component={SignIn}
-          options={{
-            headerTitle: 'Cadastro',
-          }}
-        /> */}
         <Stack.Screen
           name="Home"
           component={BottomTab}
@@ -62,6 +48,20 @@ export default () => {
           component={Settings}
           options={{title: 'Ajustes'}}
         />
+        <Stack.Screen
+          name={'Login'}
+          component={Login}
+          options={{
+            headerShown: false,
+          }}
+        />
+        {/* <Stack.Screen
+          name={'SignIn'}
+          component={SignIn}
+          options={{
+            headerTitle: 'Cadastro',
+          }}
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -6,6 +6,9 @@ import * as Animatable from 'react-native-animatable';
 const AnimatableView = Animatable.createAnimatableComponent(View);
 
 import colors from '../constants/colors';
+import fontSize from '../constants/fontSize';
+import fontFamily from '../constants/fontFamily';
+
 import Button from './Button';
 
 import IconArrowLeft from '../assets/icons/IconArrowLeft';
@@ -97,7 +100,9 @@ export default ({
                 showsVerticalScrollIndicator={false}>
                 {data.map((value, index) => (
                   <View style={styles.itemPicker} key={index}>
-                    <Text>{value}</Text>
+                    <Text allowFontScaling={false} style={styles.textValue}>
+                      {value}
+                    </Text>
                   </View>
                 ))}
               </ScrollView>
@@ -177,15 +182,19 @@ const styles = StyleSheet.create({
   options: {
     flexDirection: 'row',
   },
+  textValue: {
+    fontFamily: fontFamily.light,
+    fontSize: fontSize.medium,
+  },
   button: {
     width: '50%',
     backgroundColor: 'transparent',
   },
   buttonTextCancel: {
-    fontWeight: 'normal',
+    fontFamily: fontFamily.regular,
     color: colors.black,
   },
   buttonTextConfirm: {
-    color: colors.black,
+    color: colors.primary,
   },
 });
